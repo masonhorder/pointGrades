@@ -19,7 +19,6 @@ def lines():
 os.system("clear")
 
 lines()
-print("\n\n\nPlease make sure your grades are hidden on the schoolloop site!")
 print("\nmason horder\n\n")
 lines()
 
