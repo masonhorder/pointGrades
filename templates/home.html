@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Point Grade</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+    <style>
+        .body{
+            background-color:white;
+            border-radius: 60px;
+            box-shadow: 6px 6px 10px 10px rgba(0,0,0,.3);
+            width: 400px;
+            margin: auto;
+            margin-top: 80px;
+            padding: 30px;
+            text-align: center;
+        }
+        body{
+            font-family: 'avenir'
+        }
+        .title{
+            font-size: 40px;
+            margin-bottom: -21px;
+        }
+        .bold{
+            font-weight:900;
+        }
+        .letterGrade{
+            font-weight:700;
+            font-size: 35px;
+        }
+        .point{
+            font-weight:700;
+            font-size: 27px;
+        }
+        .button {
+            background-color:rgb(44, 156, 156); 
+            box-shadow: 3px 3px 10px 2px rgba(0,0,0,.3);
+            border-radius: 10px;
+            border: none;
+            width: 200px;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .button:hover{
+            cursor: pointer;
+            box-shadow: 4px 4px 11px 3px rgba(0,0,0,.3);
+        }
+        @media screen and (max-width: 1000px) {
+            .body{
+                background-color:white;
+                border-radius: 100px;
+                box-shadow: 10px 10px 16px 12px rgba(0,0,0,.3);
+                width: 800px;
+                margin: auto;
+                margin-top: 80px;
+                padding: 30px;
+                text-align: center;
+            }
+            body{
+                font-family: 'avenir';
+                font-size: 42px;
+            }
+            .title{
+                font-size: 100px;
+                margin-bottom: -21px;
+            }
+            .bold{
+                font-weight:900;
+            }
+            .letterGrade{
+                font-weight:700;
+                font-size: 70px;
+            }
+            .point{
+                font-weight:700;
+                font-size: 54px;
+            }
+            .button {
+                background-color:rgb(44, 156, 156); 
+                box-shadow: 3px 3px 10px 2px rgba(0,0,0,.3);
+                border-radius: 10px;
+                border: none;
+                width: 400px;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 38px;
+            }
+            .button:hover{
+                cursor: pointer;
+                box-shadow: 4px 4px 11px 3px rgba(0,0,0,.3);
+            }
+            .input{
+                font-size: 42px;
+            }
+        }
+    </style>
+    <script>
+        function myFunction() {
+        var username= $('#username').val();
+        var password= $('#password').val();
+        $.ajax({
+                    url: "/join",
+                    type: "POST",
+                    data: {username:username,
+                    password:password}
+                }).done(function(response) {
+                    var html= "";
+                    response =response.result;
+                        $.each(response,function(key,val){
+                        console.log(val);
+                            html+= val
+                        });
+                        html +="<br>";
+                        $(".show-data").append(html);
+                    });
+        };      
+    </script>
+    <body style="background-color:rgb(44, 156, 156)">
+        <div class= "body">
+            <p class="title">Point Grade!</p>
+            <p>Created By: Mason Horder!</p>
+            <p class="bold">Schoolloop Username:</p> 
+            <input class = "input" type="text" id="username" name="username">
+            <br><br>
+            <p class="bold">Schoolloop Password:</p> 
+            <input class = "input" type="password" id="password" name="password">
+            <br><br>
+            <button class="button" id="clicked" onclick="myFunction()">Check Grade</button>
+            <br>
+            <br>
+            <div class="show-data" >
+            </div>
+        </div>
+        
+    </body>
+</html>
