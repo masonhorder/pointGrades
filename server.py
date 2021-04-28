@@ -48,8 +48,9 @@ def webScrape(username,password):
                     
                     assesmentCount = 0
                     assignmentCount = 0
-                    assesmentScore = 3
+                    assesmentScore = 0
                     assingmentScore = 0
+                    gradesList = []
 
                     for assignment in assignments:
                         # assignments!
@@ -58,9 +59,12 @@ def webScrape(username,password):
                         index = 0
                         score = []
                         isAssessment = False
-                        
+                        assignmentName = ""
                         for column in columns:
                             if index == 0:
+                                assignmentName = column.div.a.text
+                                assignmentName.replace("u'", "")
+                                assignmentName.replace("'", "")
                                 if "Assessment" in str(column.div):
                                     # print("Assessment")
                                     isAssessment = True
@@ -72,6 +76,7 @@ def webScrape(username,password):
                                 score = list(map(int, temp))
                                 # print(score[0])
                             index += 1
+                        gradesList.append([score[0],isAssessment,assignmentName])
                         if isAssessment == True:
                             assesmentCount += 1
                             assesmentScore += score[0]
@@ -83,6 +88,7 @@ def webScrape(username,password):
                     assignmentAverage = assingmentScore/assignmentCount
                     assessmentAverage = assesmentScore/assesmentCount
                     classPoints = (assessmentAverage * .6) + (assignmentAverage * .4)
+                    print(gradesList)
                     if classPoints < 1.5:
                         letter = "F"
                     elif classPoints < 2.5:
@@ -99,8 +105,17 @@ def webScrape(username,password):
                     # print("Letter Grade: " + letter + "\n")
                     # print("\n\n")
         s.post("https://calhigh.schoolloop.com/portal/toggleModule?d=x&module_name=grades")
-    # return "Assignment Average: " + str(assignmentAverage) + "<br>Assessment Average: " + str(assessmentAverage) + "<br>Total Class Points: " + str(classPoints) + "<br>Letter Grade: " + letter + "<br>"
-    return "<p>" + username + ":<br><span class='letterGrade'>" + letter + "</span><br><span class='point'>" + str(classPoints) + "</span><br><br>Assignment Average: " + str(assignmentAverage) + "<br>Assessment Average: " + str(assessmentAverage) + "</p>"
+    
+    gradesString = ""
+
+    for grade in gradesList:
+        gradeType = "Assignment"
+        if grade[1] == True:
+            gradeType = "Assesment"
+        gradesString += "<br>" + grade[2] + " " + gradeType + " " + str(grade[0])
+
+    return "<p>" + username + ":<br><span class='letterGrade'>" + letter + "</span><br><span class='point'>" + str(classPoints) + "</span><br><br>Assignment Average: " + str(assignmentAverage) + "<br>Assessment Average: " + str(assessmentAverage) +"</p>" + gradesString
+
 
 
 @app.route('/')
